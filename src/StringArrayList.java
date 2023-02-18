@@ -1,8 +1,10 @@
+import interfaces.StringList;
+
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class StringArrayList implements StringList{
+public class StringArrayList implements StringList {
 
     String[] strings;
     int size;
@@ -20,9 +22,6 @@ public class StringArrayList implements StringList{
         }
     }
 
-    // Добавление элемента.
-    // Вернуть добавленный элемент
-    // в качестве результата выполнения.
     @Override
     public String add(String item) {
         checkItem(item);
@@ -35,13 +34,6 @@ public class StringArrayList implements StringList{
         }
         return item;
     }
-    // Добавление элемента
-    // на определенную позицию списка.
-    // Если выходит за пределы фактического
-    // количества элементов или массива,
-    // выбросить исключение.
-    // Вернуть добавленный элемент
-    // в качестве результата выполнения.
     @Override
     public String add(int index, String item) {
        checkItem(item);
@@ -57,13 +49,6 @@ public class StringArrayList implements StringList{
         }
         return item;
     }
-    // Установить элемент
-    // на определенную позицию,
-    // затерев существующий.
-    // Выбросить исключение,
-    // если индекс больше
-    // фактического количества элементов
-    // или выходит за пределы массива.
     @Override
     public String set(int index, String item) {
        checkItem(item);
@@ -78,18 +63,16 @@ public class StringArrayList implements StringList{
         }
         return item;
     }
-    // Удаление элемента.
-    // Вернуть удаленный элемент
-    // или исключение, если подобный
-    // элемент отсутствует в списке.
     @Override
     public String remove(String item) {
         checkItem(item);
         int newSize = size;
         for (int i = 0; i < size; i++) {
            if (strings[i].equals(item)&& i!=size-1) {
-              strings[i] = strings[i+1];
-                    strings[i+1]=null;
+               for (int j=i; j<size-1;j++) {
+                   strings[j] = strings[j + 1];
+                   strings[j + 1] = null;
+               }
                     newSize = size--;
                     break;
            }
@@ -111,8 +94,10 @@ public class StringArrayList implements StringList{
         for (int i=0; i<size;i++){
             if (i==index && i!=size-1){
                 str = strings[i];
-                strings[i] = strings[i+1];
-                strings[i+1] = null;
+                for (int j=i; j<size-1;j++) {
+                    strings[j] = strings[j + 1];
+                    strings[j + 1] = null;
+                }
                newSize = size--;
                break;
             }
@@ -151,7 +136,7 @@ public class StringArrayList implements StringList{
     @Override
     public int lastIndexOf(String item) {
         checkItem(item);
-        for (int i = size; i >=0 ; i--) {
+        for (int i = size-1; i >=0 ; i--) {
             if (strings[i].equals(item))
                 return i;
         }
