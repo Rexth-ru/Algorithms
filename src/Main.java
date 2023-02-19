@@ -1,11 +1,22 @@
 import interfaces.IntegerList;
 import interfaces.StringList;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
+        IntegerList integerList = new IntegerArrayList(2);
+        integerList.add(6);
+        integerList.add(3);
+        integerList.add(9);
+        integerList.add(3,(Integer) 7);
+        System.out.println(integerList);
+        System.out.println(integerList.contains(10));
+
+    }
+}
 //        IntegerList integerList = new IntegerArrayList(5);
 //        integerList.add(6);
 //        integerList.add(3);
@@ -27,13 +38,13 @@ public class Main {
 //        integerList1.add(2);
 //        integerList1.add(7);
 //        System.out.println(integerList1.equals(integerList));
-        int[] arr = new int[10];
-        IntegerList integerList = printRandomIntegerArrayList(arr, 0, 10);
-        System.out.println(integerList);
-        System.out.println(integerList.contains(11));
-        System.out.println(integerList);
-
-    }
+//        int[] arr = new int[10];
+//        IntegerList integerList = printRandomIntegerArrayList(arr, 0, 10);
+//        System.out.println(integerList);
+//        System.out.println(integerList.contains(11));
+//        System.out.println(integerList);
+//
+//    }
 //        System.out.println(Arrays.toString(arr));
 //        int[] arr1 = arr.clone();
 //        System.out.println(Arrays.toString(arr1));
@@ -74,24 +85,6 @@ public class Main {
 //            integers[j] = tmp;
 //        }
 //    }
-public static IntegerList printRandomIntegerArrayList(int[]arr, int min, int max) {
-    Random random = new Random();
-    IntegerList integerList = new IntegerArrayList(arr.length);
-    for (int i = 0; i < arr.length; i++) {
-        arr[i] = random.nextInt(max - min + 1) + min;
-        integerList.add(arr[i]);
-    }
-    return integerList;
-}
-}
-
-
-
-
-
-
-
-
 
 //        StringList arrayList = new StringArrayList(4);
 //        arrayList.add("abcd");

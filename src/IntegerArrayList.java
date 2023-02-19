@@ -4,13 +4,16 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 public class IntegerArrayList implements IntegerList {
     Integer[] integers;
+    int capacity;
     int size;
     public IntegerArrayList(int capacity) {
 
         if (capacity > 0){
+            this.capacity = capacity;
             this.integers = new Integer[capacity];
             this.size = 0;
         } else if (capacity < 0){
+            this.capacity = capacity;
             this.integers = new Integer[Math.abs(capacity)];
             this.size = 0;
         } else {
@@ -20,7 +23,8 @@ public class IntegerArrayList implements IntegerList {
     @Override
     public Integer add(Integer item) {
         checkItem(item);
-        for (int i = 0; i < integers.length; i++) {
+        integers =  grow(integers);
+        for (int i = 0; i < capacity; i++) {
             if (integers[i]==null){
                 integers[i] = item;
                 size++;
@@ -32,8 +36,9 @@ public class IntegerArrayList implements IntegerList {
     @Override
     public Integer add(int index, Integer item) {
         checkItem(item);
-        for (int i = 0; i < integers.length; i++) {
-            if (index >= integers.length||integers[index]!=null){
+        integers =  grow(integers);
+        for (int i = 0; i < capacity; i++) {
+            if (index >= capacity||integers[index]!=null){
                 throw new IllegalArgumentException();
             }
             if (i==index) {
@@ -112,7 +117,8 @@ public class IntegerArrayList implements IntegerList {
     @Override
     public boolean contains(Integer item) {
         checkItem(item);
-        sortInsertion(integers);
+     //   sortInsertion(integers);
+        quickSort(integers, 0, size-1);
         if (binarySearch(integers,item)){
             return true;
         }
@@ -227,17 +233,17 @@ public class IntegerArrayList implements IntegerList {
             e.printStackTrace();
         }
     }
-    private void sortInsertion(Integer[] integers){
-        for (int i =0; i<size;i++){
-            int tmp = integers[i];
-            int j = i;
-            while (j>0 && integers[j-1]>=tmp){
-                integers[j] = integers[j-1];
-                j--;
-            }
-            integers[j] = tmp;
-        }
-    }
+//    private void sortInsertion(Integer[] integers){
+//        for (int i =0; i<size;i++){
+//            int tmp = integers[i];
+//            int j = i;
+//            while (j>0 && integers[j-1]>=tmp){
+//                integers[j] = integers[j-1];
+//                j--;
+//            }
+//            integers[j] = tmp;
+//        }
+//    }
     private boolean binarySearch(Integer[] integers, int element){
         int min = 0;
         int max = size-1;
@@ -251,6 +257,45 @@ public class IntegerArrayList implements IntegerList {
             }
         }
         return false;
+    }
+
+    private void quickSort(Integer[] arr, int begin,int end ) {
+        if (begin < end) {
+            int partitionIndex = partition(arr, begin, end);
+
+            quickSort(arr, begin, partitionIndex - 1);
+            quickSort(arr, partitionIndex + 1, end);
+        }
+    }
+
+    private static int partition(Integer[] arr, int begin, int end) {
+        int pivot = arr[end];
+        int i = (begin - 1);
+
+        for (int j = begin; j < end; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+
+                swapElements(arr, i, j);
+            }
+        }
+
+        swapElements(arr, i + 1, end);
+        return i + 1;
+    }
+    private static void swapElements(Integer[] ar, int indexA, int indexB) {
+        int tmp = ar[indexA];
+        ar[indexA] = ar[indexB];
+        ar[indexB] = tmp;
+    }
+    private Integer[] grow(Integer[] integers) {
+       Integer[] integer;
+       if (capacity == size) {
+           capacity = size + (size / 2);
+           integer = Arrays.copyOf(integers, capacity);
+           return integer;
+       }
+       return integers;
     }
 }
 
