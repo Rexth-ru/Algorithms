@@ -3,9 +3,9 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 public class IntegerArrayList implements IntegerList {
-    Integer[] integers;
-    int capacity;
-    int size;
+    private Integer[] integers;
+    private int capacity;
+    private int size;
     public IntegerArrayList(int capacity) {
 
         if (capacity > 0){
@@ -24,44 +24,31 @@ public class IntegerArrayList implements IntegerList {
     public Integer add(Integer item) {
         checkItem(item);
         integers =  grow(integers);
-        for (int i = 0; i < capacity; i++) {
-            if (integers[i]==null){
-                integers[i] = item;
-                size++;
-                break;
-            }
-        }
+        integers[size] = item;
+        size++;
         return item;
     }
     @Override
     public Integer add(int index, Integer item) {
         checkItem(item);
         integers =  grow(integers);
-        for (int i = 0; i < capacity; i++) {
-            if (index >= capacity||integers[index]!=null){
-                throw new IllegalArgumentException();
-            }
-            if (i==index) {
-                integers[i] = item;
-                size++;
-                break;
-            }
+        if (index >= capacity||integers[index]!=null){
+            throw new IllegalArgumentException();
         }
+        for (int j=size; j>index;j--) {
+            integers[j] = integers[j-1];
+        }integers[index] = item;
+        size++;
         return item;
     }
 
     @Override
     public Integer set(int index, Integer item) {
         checkItem(item);
-        for (int i = 0; i < integers.length; i++) {
-            if (index >= integers.length|| integers[index]==null){
-                throw new IllegalArgumentException();
-            }
-            if (i==index) {
-                integers[i] = item;
-                break;
-            }
+        if (index >= integers.length|| integers[index]==null){
+            throw new IllegalArgumentException();
         }
+        integers[index] = item;
         return item;
     }
 
