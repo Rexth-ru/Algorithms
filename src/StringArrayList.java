@@ -6,8 +6,8 @@ import java.util.Objects;
 
 public class StringArrayList implements StringList {
 
-    String[] strings;
-    int size;
+    private String[] strings;
+    private int size;
 
     public StringArrayList(int capacity) {
 
@@ -25,43 +25,30 @@ public class StringArrayList implements StringList {
     @Override
     public String add(String item) {
         checkItem(item);
-        for (int i = 0; i < strings.length; i++) {
-            if (strings[i]==null){
-                strings[i] = item;
-                size++;
-                break;
-            }
-        }
+        strings[size] = item;
+        size++;
         return item;
     }
     @Override
     public String add(int index, String item) {
        checkItem(item);
-        for (int i = 0; i < strings.length; i++) {
-            if (index >= strings.length||strings[index]!=null){
+       if (index >= strings.length|| index<0){
                 throw new IllegalArgumentException();
-            }
-            if (i==index) {
-                strings[i] = item;
-                size++;
-                break;
-            }
-        }
-        return item;
+       }
+       for (int j=size+1; j>index;j--) {
+           strings[j] = strings[j-1];
+       }strings[index] = item;
+       size++;
+       return item;
     }
+
     @Override
     public String set(int index, String item) {
        checkItem(item);
-        for (int i = 0; i < strings.length; i++) {
-            if (index >= strings.length|| strings[index]==null){
-                throw new IllegalArgumentException();
-            }
-            if (i==index) {
-                strings[i] = item;
-                break;
-            }
-        }
-        return item;
+       if (index >= strings.length|| strings[index]==null){
+           throw new IllegalArgumentException();
+       }else strings[index] = item;
+       return item;
     }
     @Override
     public String remove(String item) {
